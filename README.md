@@ -2,4 +2,4 @@
 high performance linux front server. developed by c++
 
 # prepare
-yum install bazel
+[install blade](https://github.com/chen3feng/typhoon-blade)
