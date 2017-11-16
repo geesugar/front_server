@@ -3,6 +3,7 @@ cc_binary(
     srcs = 'server.cc',
     deps = [
       "//thirdparty/glog:glog",
+      "//thirdparty/gflags:gflags",
       "#pthread",
     ]
 )
