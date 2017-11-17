@@ -1,6 +1,10 @@
 cc_binary(
     name = 'front_server',
-    srcs = 'server.cc',
+    srcs = [
+      'main.cc',
+      'server.cc',
+      'config.cc'
+    ],
     deps = [
       "//thirdparty/glog:glog",
       "//thirdparty/gflags:gflags",
