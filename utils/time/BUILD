@@ -7,3 +7,12 @@ cc_library (
     "//thirdparty/glog:glog",
   ],
 )
+
+cc_test(
+    name = 'time_test',
+    srcs = 'time_test.cc',
+    deps = [
+      ':time',
+      '#pthread',
+    ]
+)
