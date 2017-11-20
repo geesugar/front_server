@@ -6,4 +6,6 @@
  */
 #include "server/config.h"
 
+DEFINE_int32(tcp_backlog, 511, "tcp backlog");
+
 DEFINE_int32(port, -1, "server listen port");

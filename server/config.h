@@ -9,6 +9,8 @@
 
 #include "thirdparty/gflags/gflags.h"
 
+DECLARE_int32(tcp_backlog);
+
 DECLARE_int32(port);
 
 #endif  // SERVER_CONFIG_H
