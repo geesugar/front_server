@@ -17,8 +17,7 @@ public:
   // add your public interface here:
 
 private:
-  // add your private function, members here:
-  //
+  bool InitServer();
 };  // class Server
 }  // namespace Server
 }  // namespace Front
