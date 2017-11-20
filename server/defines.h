@@ -7,6 +7,8 @@
 #ifndef SERVER_DEFINES_H
 #define SERVER_DEFINES_H
 
+#include <string>
+
 #include "thirdparty/glog/logging.h"
 
 #ifndef FUNC_NAME
