@@ -14,12 +14,13 @@
 #include "server/server.h"
 namespace Front { namespace Server {
 Server::Server() {
+  InitServer();
 }
+
 Server::~Server() {
 }
 
 bool Server::InitServer() {
-
   int32_t listen_sock = socket(AF_INET, SOCK_STREAM, 0);
   if (0 != listen(listen_sock, FLAGS_tcp_backlog)) {
     LOG(ERROR) << FUNC_NAME << "listen error. errno[" << errno << "]";
