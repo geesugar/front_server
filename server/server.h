@@ -19,7 +19,9 @@ public:
 private:
   bool InitServer();
 
-  bool SetReUseAddr(const int32_t fd);
+  bool CreateSocket(int32_t* fd);
+  bool SetReUseAddr(const int32_t& fd);
+  bool Listen(const int32_t& sock);
 };  // class Server
 }  // namespace Server
 }  // namespace Front

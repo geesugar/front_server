@@ -31,9 +31,9 @@
 *.out
 *.app
 
-thirdparty/
-build64_debug/
-build64_release/
+# thirdparty/
+build64_debug
+build64_release
 .SConstruct.lock
 .sconsign.dblite
 blade-bin
