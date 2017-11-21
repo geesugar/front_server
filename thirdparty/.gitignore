@@ -1,10 +1,1 @@
 build
-gflags/lib
-gflags/lib64_release
-gflags/lib64_debug
-glog/lib
-glog/lib64_release
-glog/lib64_debug
-gtest/lib
-gtest/lib64_release
-gtest/lib64_debug
