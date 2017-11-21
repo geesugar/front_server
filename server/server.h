@@ -18,6 +18,8 @@ public:
 
 private:
   bool InitServer();
+
+  bool SetReUseAddr(const int32_t fd);
 };  // class Server
 }  // namespace Server
 }  // namespace Front
