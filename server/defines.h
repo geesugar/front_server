@@ -40,4 +40,7 @@ inline std::string MethodName(const std::string& pretty_function) {
   ((((a) - (b)) > (EPSILON)) ? true : false)
 #endif  // DOUBLE_GT
 
+#define MAX_EVENTS 1024
+#define BUFFER_SIZE 1024
+
 #endif  // SERVER_DEFINES_H

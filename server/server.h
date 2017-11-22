@@ -20,8 +20,9 @@ private:
   bool InitServer();
 
   bool CreateSocket(int32_t* fd);
-  bool SetReUseAddr(const int32_t& fd);
+  bool SetReuseAddr(const int32_t& fd);
   bool Listen(const int32_t& sock);
+  bool SetNonblocking(const int32_t& fd);
 };  // class Server
 }  // namespace Server
 }  // namespace Front
