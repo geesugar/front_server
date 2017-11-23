@@ -8,6 +8,7 @@
 #define SERVER_CONFIG_H
 
 #include "thirdparty/gflags/gflags.h"
+#include "thirdparty/glog/logging.h"
 
 DECLARE_int32(tcp_backlog);
 

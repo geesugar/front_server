@@ -7,8 +7,6 @@
 #ifndef SERVER_SERVER_H
 #define SERVER_SERVER_H
 
-#include "thirdparty/glog/logging.h"
-
 namespace Front { namespace Server {
 class Server {
 public:
