@@ -8,6 +8,7 @@ cc_binary(
     deps = [
       "//thirdparty/glog:glog",
       "//thirdparty/gflags:gflags",
+      "//thirdparty/event2:event",
       "#pthread",
     ]
 )

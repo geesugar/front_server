@@ -7,6 +7,7 @@ high performance linux front server. developed by c++
 # thridparty
  - glog-0.3.5 (installed gflags-2.2.1 develop version in system before compiling glog library, otherwise FLAGS_log_dir, FLAGS_v configured in flagfile would not take effect)
  - gflags-2.2.1 (compiled with cmake)
+ - libevent-2.1.8-stable
 
 
 # technology

@@ -12,6 +12,8 @@
 #include "server/defines.h"
 #include "server/server.h"
 
+#include "thirdparty/event2/event.h"
+
 
 using Front::Server::Server;
 

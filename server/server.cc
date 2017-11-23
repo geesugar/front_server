@@ -97,7 +97,7 @@ bool Server::InitServer() {
         int32_t size = 0;
         char buffer[BUFFER_SIZE] = {0};
         while ((size = read(sock_fd, &buffer, BUFFER_SIZE)) > 0) {
-          LOG(INFO) << FUNC_NAME << "recv[" << buffer << "]";
+          LOG(INFO) << FUNC_NAME << "recv:" << buffer;
           memset(buffer, 0, BUFFER_SIZE);
         }
       } else if (events[i].events & EPOLLOUT) {
