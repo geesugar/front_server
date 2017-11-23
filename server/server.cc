@@ -38,6 +38,8 @@ bool Server::InitServer() {
 
   int32_t epollfd = epoll_create(1);
   if (-1 == epollfd) {
+    LOG(ERROR) << FUNC_NAME << "epoll_create failed. error["
+      << strerror(errno) << "]";
     return false;
   }
 
@@ -45,6 +47,8 @@ bool Server::InitServer() {
   ev.events = EPOLLIN | EPOLLET;
   ev.data.fd = listen_sock;
   if (-1 == epoll_ctl(epollfd, EPOLL_CTL_ADD, listen_sock, &ev)) {
+    LOG(ERROR) << FUNC_NAME << "epoll_ctl add listen_sock[" << listen_sock
+      << "] failed. error[" << strerror(errno) << "]";
     return false;
   }
 
