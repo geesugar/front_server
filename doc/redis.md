@@ -1,4 +1,8 @@
-[TOC]
+Table of Contents
+=================
+
+   * [Redis](#redis)
+      * [List](#list)
 
 # Redis
 
