@@ -15,8 +15,8 @@
 
 #include "server/config.h"
 #include "server/defines.h"
+#include "server/helper.h"
 #include "server/server.h"
-
 
 namespace Front { namespace Server {
 Server::Server() : m_base(NULL), m_listener(NULL), m_signal_event(NULL) {
@@ -37,7 +37,7 @@ event_base* Server::GetBase() {
 void Server::ConnReadCallBack(struct bufferevent *bev, void *user_data) {
   char msg[1024] = {0};
   bufferevent_read(bev, msg, sizeof(msg));
-  LOG(INFO) << FUNC_NAME << "ECHO: " << msg;
+  LOG(INFO) << FUNC_NAME << GetAddressBySocket(bev->ev_read.ev_fd) << " ECHO: " << msg;
   bufferevent_write(bev, msg, sizeof(msg));
 }
 
@@ -46,6 +46,14 @@ void Server::ConnWriteCallBack(struct bufferevent *bev, void *user_data) {
 
 void Server::ConnEventCallBack(struct bufferevent *bev, int16_t events,
   void *user_data) {
+  if (events & BEV_EVENT_EOF) {
+    GetAddressBySocket(bev->ev_read.ev_fd);
+    LOG(INFO) << FUNC_NAME << "Connection closed. peer host["
+      << GetAddressBySocket(bev->ev_read.ev_fd) << "]";
+  } else if (events & BEV_EVENT_ERROR) {
+    LOG(INFO) << FUNC_NAME << "Got an error on the connection:" << strerror(errno);
+  }
+  bufferevent_free(bev);
 }
 
 bool Server::InitEventServer() {

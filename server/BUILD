@@ -3,7 +3,8 @@ cc_binary(
     srcs = [
       'main.cc',
       'server.cc',
-      'config.cc'
+      'config.cc',
+      'helper.cc',
     ],
     deps = [
       "//thirdparty/glog:glog",

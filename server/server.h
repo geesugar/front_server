@@ -7,8 +7,10 @@
 #ifndef SERVER_SERVER_H
 #define SERVER_SERVER_H
 
+
 #include <thirdparty/event2/buffer.h>
 #include <thirdparty/event2/bufferevent.h>
+#include <thirdparty/event2/bufferevent_struct.h>
 #include <thirdparty/event2/event.h>
 #include <thirdparty/event2/listener.h>
 #include <thirdparty/event2/util.h>
