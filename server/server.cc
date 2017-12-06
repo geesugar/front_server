@@ -6,6 +6,7 @@
  */
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/epoll.h>
@@ -15,12 +16,95 @@
 #include "server/config.h"
 #include "server/defines.h"
 #include "server/server.h"
+
+
 namespace Front { namespace Server {
-Server::Server() {
-  CHECK(InitServer()) << "init server failed.";
+Server::Server() : m_base(NULL), m_listener(NULL), m_signal_event(NULL) {
+  // CHECK(InitServer()) << "init server failed.";
+  CHECK(InitEventServer()) << "init event server failed.";
 }
 
 Server::~Server() {
+  if (m_listener) evconnlistener_free(m_listener);
+  if (m_signal_event) event_free(m_signal_event);
+  if (m_base) event_base_free(m_base);
+}
+
+event_base* Server::GetBase() {
+  return m_base;
+}
+
+void Server::ConnReadCallBack(struct bufferevent *bev, void *user_data) {
+  char msg[1024] = {0};
+  bufferevent_read(bev, msg, sizeof(msg));
+  LOG(INFO) << FUNC_NAME << "ECHO: " << msg;
+  bufferevent_write(bev, msg, sizeof(msg));
+}
+
+void Server::ConnWriteCallBack(struct bufferevent *bev, void *user_data) {
+}
+
+void Server::ConnEventCallBack(struct bufferevent *bev, int16_t events,
+  void *user_data) {
+}
+
+bool Server::InitEventServer() {
+  struct sockaddr_in sin;
+
+  m_base = event_base_new();
+  if (!m_base) {
+    LOG(ERROR) << FUNC_NAME << "could not initialize libevent";
+    return false;
+  }
+
+  memset(&sin, 0, sizeof(sin));
+  sin.sin_family = AF_INET;
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  sin.sin_port = htons(FLAGS_port);
+
+  m_listener = evconnlistener_new_bind(m_base, Server::ListenerCallBack,
+    static_cast<void*>(this), LEV_OPT_REUSEABLE|LEV_OPT_CLOSE_ON_FREE, -1,
+    (struct sockaddr*)&sin, sizeof(sin));
+  if (!m_listener) {
+    LOG(ERROR) << FUNC_NAME << "could not create a listener";
+    return false;
+  }
+  LOG(INFO) << FUNC_NAME << "server start listen port[" << FLAGS_port << "]";
+
+  m_signal_event = evsignal_new(m_base, SIGINT, Server::SignalCallBack,
+    static_cast<void*>(this));
+  if (!m_signal_event || event_add(m_signal_event, NULL) < 0) {
+    LOG(ERROR) << FUNC_NAME << "could not create/add a signal event";
+    return false;
+  }
+
+  event_base_dispatch(m_base);
+  return true;
+}
+
+void Server::SignalCallBack(evutil_socket_t sig,
+  int16_t events, void* user_data) {
+  Server* server = static_cast<Server*>(user_data);
+  struct timeval delay = { 2, 0 };
+  LOG(INFO) << FUNC_NAME
+    << "Caught an interrupt signal, exiting cleanly in two seconds";
+  event_base_loopexit(server->GetBase(), &delay);
+}
+
+void Server::ListenerCallBack(struct evconnlistener *listener,
+  evutil_socket_t fd, struct sockaddr *sa, int socklen, void *user_data) {
+  Server* server = static_cast<Server*>(user_data);
+  struct bufferevent* bev;
+  bev = bufferevent_socket_new(server->GetBase(), fd, BEV_OPT_CLOSE_ON_FREE);
+  if (!bev) {
+    LOG(INFO) << FUNC_NAME << "error constructing buferevent";
+    return;
+  }
+  bufferevent_setcb(bev, Server::ConnReadCallBack,
+    Server::ConnWriteCallBack,
+    Server::ConnEventCallBack, NULL);
+  bufferevent_enable(bev, EV_WRITE);
+  bufferevent_enable(bev, EV_READ);
 }
 
 bool Server::InitServer() {
