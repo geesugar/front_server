@@ -11,8 +11,8 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
-#include "server/defines.h"
-#include "server/helper.h"
+#include "server/src/defines.h"
+#include "server/src/helper.h"
 namespace Front { namespace Server {
 
 std::string GetAddressBySocket(

@@ -13,10 +13,10 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
-#include "server/config.h"
-#include "server/defines.h"
-#include "server/helper.h"
-#include "server/server.h"
+#include "server/src/config.h"
+#include "server/src/defines.h"
+#include "server/src/helper.h"
+#include "server/src/server.h"
 
 namespace Front { namespace Server {
 Server::Server() : m_base(NULL), m_listener(NULL), m_signal_event(NULL) {

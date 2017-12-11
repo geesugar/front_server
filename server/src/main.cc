@@ -8,9 +8,9 @@
 #include <iostream>
 #include <memory>
 
-#include "server/config.h"
-#include "server/defines.h"
-#include "server/server.h"
+#include "server/src/config.h"
+#include "server/src/defines.h"
+#include "server/src/server.h"
 
 using Front::Server::Server;
 
