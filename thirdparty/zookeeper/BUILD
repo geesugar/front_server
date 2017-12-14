@@ -1,5 +1,5 @@
 cc_library(
-  name = 'zookeeper',
+  name = 'zookeeper_mt',
   prebuilt = 1,
   deps = [
   ],
