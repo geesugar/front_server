@@ -31,6 +31,37 @@ void DingMsgSender::PushMsg(const DingMsg& msg) {
   }
 }
 
+std::string DingMsgSender::GetHostName() {
+  static std::string result = "";
+  if (result.empty()) {
+    char hostname[256] = {0};
+    if (0 != gethostname(hostname, sizeof(hostname))) {
+      result = "UNKOWN";
+    } else {
+      result = hostname;
+    }
+  }
+  return result;
+}
+
+std::string DingMsgSender::GetProcessName() {
+  static std::string result = "";
+  if (result.empty()) {
+    char process_path[1024] = {0};
+    if (readlink("/proc/self/exe", process_path, sizeof(process_path)) <= 0) {
+      result = "UNKOWN";
+    } else {
+      char* process_name = strrchr(process_path, '/');
+      if (process_name) {
+        result = ++process_name;
+      } else {
+        result = "UNKOWN";
+      }
+    }
+  }
+  return result;
+}
+
 void DingMsgSender::SendDingMsg(const DingMsg& msg) {
   std::string msg_str = msg.msg;
   if (!msg_str.empty() && '\n' == msg_str.at(msg_str.length() - 1)) {
@@ -41,7 +72,8 @@ void DingMsgSender::SendDingMsg(const DingMsg& msg) {
   }
 
   std::ostringstream oss;
-  oss << "{\"msgtype\": \"text\", \"text\": {\"content\":\"" << msg_str
+  oss << "{\"msgtype\": \"text\", \"text\": {\"content\":\"" << "["
+    << GetHostName() << "] [" << GetProcessName() << "] " << msg_str
     << "\"}, \"at\": {\"atMobiles\": [], \"isAtAll\": false}}";
   std::string url =
     "https://oapi.dingtalk.com/robot/send?access_token=" + msg.token;

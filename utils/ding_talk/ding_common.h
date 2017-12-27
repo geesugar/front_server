@@ -52,6 +52,9 @@ class DingMsgSender {
 
   std::shared_ptr<std::thread> m_send_thread;
   bool m_stop;
+
+  inline std::string GetHostName();
+  inline std::string GetProcessName();
 };
 
 class DingStreamBuf : public std::streambuf {
