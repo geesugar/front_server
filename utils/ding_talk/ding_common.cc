@@ -33,14 +33,21 @@ void DingMsgSender::PushMsg(const DingMsg& msg) {
 
 void DingMsgSender::SendDingMsg(const DingMsg& msg) {
   std::string msg_str = msg.msg;
-  if (!msg_str.empty() && '\n'== msg_str.at(msg_str.length() - 1)) {
+  if (!msg_str.empty() && '\n' == msg_str.at(msg_str.length() - 1)) {
     msg_str = msg_str.substr(0, msg_str.length() - 1);
   }
   if (msg.token.empty()) {
     return;
   }
 
-  printf("SEND: %s %s\n", msg_str.c_str(), msg.token.c_str());
+  std::ostringstream oss;
+  oss << "{\"msgtype\": \"text\", \"text\": {\"content\":\"" << msg_str
+    << "\"}, \"at\": {\"atMobiles\": [], \"isAtAll\": false}}";
+  std::string url =
+    "https://oapi.dingtalk.com/robot/send?access_token=" + msg.token;
+
+  std::string http_return;
+  CurlOp::GetHttpReturn(url, oss.str(), JSON_TYPE, 0, 0, &http_return);
 }
 
 void DingMsgSender::SendDingMsgThread() {
@@ -50,7 +57,7 @@ void DingMsgSender::SendDingMsgThread() {
     bool has_msg = false;
     {
       std::unique_lock<std::mutex> lock(m_msgs_mtx);
-      m_msgs_cv.wait_for(lock, std::chrono::seconds(1), [&]{
+      m_msgs_cv.wait_for(lock, std::chrono::seconds(1), [&] {
         return !m_msgs.empty() || m_stop;
         });
       if (!m_msgs.empty()) {
@@ -77,7 +84,7 @@ DingStreamBuf::~DingStreamBuf() {
 int DingStreamBuf::sync() {
   int buf_len = static_cast<int>(epptr() - pbase());
   std::string msg_str(pbase());
-  LOG(INFO) << __func__ << "len:" << buf_len << " buf:" << static_cast<int>(pptr() - pbase())  << " " << msg_str;
+  LOG(INFO) << "[DING_MSG] " << msg_str;
   DingMsg msg(m_ding_talk_token, msg_str);
   DingMsgSender::GetInstance()->PushMsg(msg);
 

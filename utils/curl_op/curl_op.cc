@@ -17,8 +17,8 @@ CurlOp::CurlOp() {
 CurlOp::~CurlOp() {
 }
 
-bool CurlOp::GetHttpReturn(const std::string& url,
-  const std::string& post_data, const int32_t& conn_tm,
+bool CurlOp::GetHttpReturn(const std::string& url, const std::string& post_data,
+  const CONTENT_TYPE& content_type, const int32_t& conn_tm,
   const int32_t& exec_tm, std::string* http_return) {
   CURL *curl_client = curl_easy_init();
   if (!curl_client) {
@@ -45,6 +45,12 @@ bool CurlOp::GetHttpReturn(const std::string& url,
   if (!post_data.empty()) {
     curl_easy_setopt(curl_client, CURLOPT_POST, 1);
     curl_easy_setopt(curl_client, CURLOPT_POSTFIELDS, post_data.data());
+  }
+
+  if (JSON_TYPE == content_type) {
+    struct curl_slist* headers = NULL;
+    headers = curl_slist_append(headers, "Content-Type: application/json");
+    curl_easy_setopt(curl_client, CURLOPT_HTTPHEADER, headers);
   }
 
   CURLcode ret_code = curl_easy_perform(curl_client);
