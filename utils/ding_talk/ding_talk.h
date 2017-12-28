@@ -25,9 +25,9 @@ namespace utils {
  *
  * NOte:
  *   The output stream must be ended with std::endl, otherwise it does
- *   not send dingding message, because outputing std::endl could trigger
- *   to callback buffer's flush function, and the send dingding message
- *   is realized in the flush function.
+ *   not send dingding message, because the buffer's flush function
+ *   in which realize the send dingding message action would be invoked
+ *   when outputing std::endl.
  *
  * Reference:
  *   https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.qaR1XD&treeId=257&articleId=105735&docType=1
