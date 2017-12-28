@@ -10,18 +10,27 @@
 #include <string>
 
 #include "thirdparty/glog/logging.h"
-#include "utils/ding_talk/ding_common.h"
+#include "utils/ding_talk/src/ding_common.h"
 
 namespace utils {
 
 #define DING_TALK_BUFF_LENGTH 4096
 
 /*
- * DingTalk could send message to dingding chat group
- * Usage: DingTalk(access_token) << msg << std::endl;
- * the output stream must end with std::endl, otherwise will not send dingding message
+ * Desc:
+ *   DingTalk make sendind message to dingding chat group easily
+ *
+ * Usage:
+ *   DingTalk(access_token) << msg << std::endl;
+ *
+ * NOte:
+ *   The output stream must be ended with std::endl, otherwise it does
+ *   not send dingding message, because outputing std::endl could trigger
+ *   to callback buffer's flush function, and the send dingding message
+ *   is realized in the flush function.
+ *
  * Reference:
- * https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.qaR1XD&treeId=257&articleId=105735&docType=1
+ *   https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.qaR1XD&treeId=257&articleId=105735&docType=1
  */
 class DingTalk : public std::ostream {
  public:

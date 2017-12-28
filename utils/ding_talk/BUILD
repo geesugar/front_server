@@ -1,8 +1,8 @@
 cc_library (
   name = "ding_talk",
   srcs = [
-    'ding_common.cc',
-    'ding_talk.cc',
+    'src/ding_common.cc',
+    'src/ding_talk.cc',
   ],
 
   deps = [

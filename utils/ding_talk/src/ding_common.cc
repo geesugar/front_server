@@ -5,7 +5,7 @@
  * date: 2017-12-27
  */
 #include "utils/curl_op/curl_op.h"
-#include "utils/ding_talk/ding_common.h"
+#include "utils/ding_talk/src/ding_common.h"
 namespace utils {
 
 DingMsgSender::DingMsgSender() : m_stop(false) {
