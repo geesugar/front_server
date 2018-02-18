@@ -111,9 +111,6 @@ DingStreamBuf::DingStreamBuf(const std::string& ding_talk_token,
 }
 
 DingStreamBuf::~DingStreamBuf() {
-}
-
-int DingStreamBuf::sync() {
   int buf_len = static_cast<int>(epptr() - pbase());
   std::string msg_str(pbase());
   LOG(INFO) << "[DING_MSG] " << msg_str;
@@ -122,6 +119,17 @@ int DingStreamBuf::sync() {
 
   memset(pbase(), 0, buf_len + 2);
   setp(pbase(), epptr());
+}
+
+int DingStreamBuf::sync() {
+  // int buf_len = static_cast<int>(epptr() - pbase());
+  // std::string msg_str(pbase());
+  // LOG(INFO) << "[DING_MSG] " << msg_str;
+  // DingMsg msg(m_ding_talk_token, msg_str);
+  // DingMsgSender::GetInstance()->PushMsg(msg);
+
+  // memset(pbase(), 0, buf_len + 2);
+  // setp(pbase(), epptr());
   return 0;
 }
 
