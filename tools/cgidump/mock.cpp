@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <iostream>
 #include <stdio.h>
 #include <libpcap/include/pcap.h>
@@ -21,7 +22,7 @@ int main (int argc, char** argv) {
   struct pcap_pkthdr pkthdr;
   int count = 0;
   while (true) {
-    const u_char *pkt_str = pcap_next(pc, &pkthdr);
+    const uint8_t *pkt_str = pcap_next(pc, &pkthdr);
     if (NULL == pkt_str) {
       break;
     }
